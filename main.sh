@@ -1,22 +1,20 @@
 #!/usr/bin/env bash
-IFS= read -r name
-read -r size
+read -r n
 
-case "$name" in
-  .*)                         kind="hidden" ;;
-  *.jpg|*.jpeg|*.png|*.gif)   kind="image"  ;;
-  *.sh|*.bash)                kind="script" ;;
-  *.txt|*.md)                 kind="text"   ;;
-  Makefile)                   kind="build"  ;;
-  *)                          kind="other"  ;;
-esac
+steps=0
+peak=$n
 
-if (( size < 100 )); then
-  class="small"
-elif (( size < 1000 )); then
-  class="medium"
-else
-  class="large"
-fi
+while (( n != 1 )); do
+  if (( n % 2 == 0 )); then
+    n=$(( n / 2 ))
+  else
+    n=$(( n * 3 + 1 ))
+  fi
+  (( steps++ ))
+  if (( n > peak )); then
+    peak=$n
+  fi
+done
 
-echo "$kind $class"
+echo "steps: $steps"
+echo "peak: $peak"
