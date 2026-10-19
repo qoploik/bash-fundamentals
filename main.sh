@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-export LC_ALL=C
+read -r -a words
 
-cut -d' ' -f1 \
-  | grep -xE 'ERROR|WARN|INFO' \
-  | sort \
-  | uniq -c \
-  | sort -k1,1nr -k2,2 \
-  | awk '{ print $2 ": " $1 }'
+declare -A count
+order=()
+
+for w in "${words[@]}"; do
+  if [[ -z "${count[$w]}" ]]; then
+    order+=("$w")
+    count[$w]=0
+  fi
+  (( count[$w]++ ))
+done
+
+for w in "${order[@]}"; do
+  echo "$w: ${count[$w]}"
+done
