@@ -1,17 +1,10 @@
 #!/usr/bin/env bash
-read -r -a words
+set -euo pipefail
 
-declare -A count
-order=()
+log=$(cat)
 
-for w in "${words[@]}"; do
-  if [[ -z "${count[$w]}" ]]; then
-    order+=("$w")
-    count[$w]=0
-  fi
-  (( count[$w]++ ))
-done
+count=$(grep -ci 'error' <<< "$log" || true)
+first=$(grep -i -m1 'error' <<< "$log" || true)
 
-for w in "${order[@]}"; do
-  echo "$w: ${count[$w]}"
-done
+echo "errors: $count"
+echo "first: ${first:-none}"
