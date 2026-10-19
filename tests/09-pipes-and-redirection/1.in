@@ -1,0 +1,7 @@
+INFO server started
+ERROR disk full
+INFO request ok
+DEBUG cache miss
+WARN slow query
+ERROR disk full
+INFO request ok

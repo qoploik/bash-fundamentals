@@ -1,0 +1,3 @@
+dir: /srv/data
+name: archive.tar
+ext: gz
