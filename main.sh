@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
-export LC_ALL=C
+IFS= read -r name
+read -r size
 
-IFS= read -r shop
-read -r n1 q1 p1
-read -r n2 q2 p2
-read -r n3 q3 p3
+case "$name" in
+  .*)                         kind="hidden" ;;
+  *.jpg|*.jpeg|*.png|*.gif)   kind="image"  ;;
+  *.sh|*.bash)                kind="script" ;;
+  *.txt|*.md)                 kind="text"   ;;
+  Makefile)                   kind="build"  ;;
+  *)                          kind="other"  ;;
+esac
 
-cat <<EOF
-Receipt: $shop
-$(printf "%-10s %5s %9s" Item Qty Price)
---------------------------
-EOF
+if (( size < 100 )); then
+  class="small"
+elif (( size < 1000 )); then
+  class="medium"
+else
+  class="large"
+fi
 
-printf "%-10s %5s %9.2f\n" "$n1" "$q1" "$p1"
-printf "%-10s %5s %9.2f\n" "$n2" "$q2" "$p2"
-printf "%-10s %5s %9.2f\n" "$n3" "$q3" "$p3"
+echo "$kind $class"
