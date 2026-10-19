@@ -1,20 +1,27 @@
 #!/usr/bin/env bash
+
+is_prime() {
+  local n=$1
+  local d
+
+  (( n < 2 )) && return 1
+
+  for (( d = 2; d * d <= n; d++ )); do
+    if (( n % d == 0 )); then
+      return 1
+    fi
+  done
+  return 0
+}
+
 read -r n
+count=0
 
-steps=0
-peak=$n
-
-while (( n != 1 )); do
-  if (( n % 2 == 0 )); then
-    n=$(( n / 2 ))
-  else
-    n=$(( n * 3 + 1 ))
-  fi
-  (( steps++ ))
-  if (( n > peak )); then
-    peak=$n
+for (( i = 2; i <= n; i++ )); do
+  if is_prime "$i"; then
+    echo "$i"
+    (( count++ ))
   fi
 done
 
-echo "steps: $steps"
-echo "peak: $peak"
+echo "count: $count"
