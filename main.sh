@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
-IFS= read -r path
+export LC_ALL=C
 
-dir="${path%/*}"
-file="${path##*/}"
-name="${file%.*}"
-ext="${file##*.}"
+IFS= read -r shop
+read -r n1 q1 p1
+read -r n2 q2 p2
+read -r n3 q3 p3
 
-echo "dir: $dir"
-echo "name: $name"
-echo "ext: $ext"
+cat <<EOF
+Receipt: $shop
+$(printf "%-10s %5s %9s" Item Qty Price)
+--------------------------
+EOF
+
+printf "%-10s %5s %9.2f\n" "$n1" "$q1" "$p1"
+printf "%-10s %5s %9.2f\n" "$n2" "$q2" "$p2"
+printf "%-10s %5s %9.2f\n" "$n3" "$q3" "$p3"
