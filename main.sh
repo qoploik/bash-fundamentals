@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-IFS= read -r total
+IFS= read -r path
 
-h=$(( total / 3600 ))
-m=$(( total % 3600 / 60 ))
-s=$(( total % 60 ))
+dir="${path%/*}"
+file="${path##*/}"
+name="${file%.*}"
+ext="${file##*.}"
 
-echo "${h}h ${m}m ${s}s"
+echo "dir: $dir"
+echo "name: $name"
+echo "ext: $ext"
