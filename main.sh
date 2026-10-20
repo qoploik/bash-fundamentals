@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-set -euo pipefail
+IFS= read -r line
 
-log=$(cat)
+first=$(awk '{ print $1 }'  <<< "$line")
+last=$(awk '{ print $NF }'  <<< "$line")
+count=$(awk '{ print NF }'  <<< "$line")
 
-count=$(grep -ci 'error' <<< "$log" || true)
-first=$(grep -i -m1 'error' <<< "$log" || true)
-
-echo "errors: $count"
-echo "first: ${first:-none}"
+echo "first=$first last=$last count=$count"
