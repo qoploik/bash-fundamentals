@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
-IFS= read -r pattern
-IFS= read -r text
+IFS= read -r line
+set -f
+set -- $line
 
-grep -q -e "$pattern" <<< "$text" 2>/dev/null
-status=$?
+verbose=0
+name=none
+count=1
 
-case $status in
-  0) verdict="match" ;;
-  1) verdict="no match" ;;
-  *) verdict="error" ;;
-esac
+while getopts ":vn:c:" opt; do
+  case $opt in
+    v) verbose=1 ;;
+    n) name=$OPTARG ;;
+    c) count=$OPTARG ;;
+    :) echo "error: -$OPTARG needs a value"; exit 0 ;;
+    \?) echo "error: unknown option -$OPTARG"; exit 0 ;;
+  esac
+done
 
-echo "$status: $verdict"
+shift $(( OPTIND - 1 ))
+
+echo "verbose=$verbose name=$name count=$count rest=$*"
