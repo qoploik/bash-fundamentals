@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
-IFS= read -r line
+IFS= read -r pattern
+IFS= read -r text
 
-first=$(awk '{ print $1 }'  <<< "$line")
-last=$(awk '{ print $NF }'  <<< "$line")
-count=$(awk '{ print NF }'  <<< "$line")
+grep -q -e "$pattern" <<< "$text" 2>/dev/null
+status=$?
 
-echo "first=$first last=$last count=$count"
+case $status in
+  0) verdict="match" ;;
+  1) verdict="no match" ;;
+  *) verdict="error" ;;
+esac
+
+echo "$status: $verdict"
